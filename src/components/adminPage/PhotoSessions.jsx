@@ -1,12 +1,11 @@
-import { Button } from '@mui/material'
-import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore'
-import { deleteObject, ref } from 'firebase/storage'
-import React, { useState } from 'react'
-import { useEffect } from 'react'
+import {Button} from '@mui/material'
+import {collection, deleteDoc, doc, getDocs} from 'firebase/firestore'
+import {deleteObject, ref} from 'firebase/storage'
+import React, {useState} from 'react'
+import {useEffect} from 'react'
 import styled from 'styled-components'
-import { db, storage } from '../../../firebase'
-import AddPhotos from './AddPhotos'
-import PhotoSessionCard from './PhotoSessionCard'
+import {db, storage} from '../../firebase'
+import PhotoSessionCard from '../shared/PhotoSessionCard'
 
 const StyledSessionHeader = styled.div`
   display: flex;

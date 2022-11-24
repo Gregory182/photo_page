@@ -12,6 +12,7 @@ export const StyledSidebar = styled.div`
   display: flex;
   flex-basis: 300px;
   flex-direction: column;
+  align-items: flex-start;
   background-color: #1a4f5b;
   color: #eee;
   border-right: 1px solid black;

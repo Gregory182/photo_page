@@ -7,18 +7,18 @@ import {
   setDoc,
   where,
 } from 'firebase/firestore'
-import React, { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { useParams } from 'react-router-dom'
-import { db } from '../../../firebase'
-import PhotoSessionCard from './PhotoSessionCard'
+import React, {useEffect, useState} from 'react'
+import {useForm} from 'react-hook-form'
+import {useParams} from 'react-router-dom'
+import {db} from '../../firebase'
+import PhotoSessionCard from '../shared/PhotoSessionCard'
 const UserDetail = () => {
   const [galeries, setGaleries] = useState([])
   const [user, setUser] = useState({})
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
   } = useForm()
 
   const params = useParams()
@@ -37,12 +37,12 @@ const UserDetail = () => {
 
       let res = []
       data.forEach((doc) => {
-        res.push({ id: doc.id, ...doc.data() })
+        res.push({id: doc.id, ...doc.data()})
       })
       setGaleries(res)
     }
     fetchGaleries()
-  }, [])
+  }, [params.id])
 
   useEffect(() => {
     const fetchGaleries = async () => {
@@ -52,7 +52,7 @@ const UserDetail = () => {
       setUser(data.data())
     }
     fetchGaleries()
-  }, [])
+  }, [params.id])
 
   return (
     <div>
@@ -69,7 +69,7 @@ const UserDetail = () => {
       <form onSubmit={handleSubmit(submitAddGallery)}>
         <div>
           <label>Dodaj Galerie</label>
-          <input {...register('title', { required: true })} />
+          <input {...register('title', {required: true})} />
           {errors.galeryName && <>Dupa</>}
         </div>
         <input type='submit' />

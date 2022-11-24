@@ -1,15 +1,15 @@
-import styled from '@emotion/styled/macro'
-import { collection, doc, setDoc } from 'firebase/firestore'
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import {collection, doc, setDoc, updateDoc} from 'firebase/firestore'
+import {getDownloadURL, ref, uploadBytesResumable} from 'firebase/storage'
 import React from 'react'
 
-import { db, storage } from '../../../firebase'
+import {db, storage} from '../../../firebase'
 
-const AddPhotos = ({ sessionId }) => {
-  const handleUpload = async (file, fileName) => {
-    const imagesRef = ref(storage, `images/${sessionId}/${fileName}`)
-    const uploadTask = uploadBytesResumable(imagesRef, file)
-
+const AddPhotos = ({sessionId}) => {
+  const handleUpload = async (file, fileName, isThumb) => {
+    let photoName = isThumb ? `resized_${fileName}` : fileName
+    const imagesRef = ref(storage, `images/${sessionId}/${photoName}`)
+    const uploadTask = uploadBytesResumable(imagesRef, file.file)
+    console.log(file.file)
     uploadTask.on(
       'state_changed',
       (snapshot) => {
@@ -24,31 +24,49 @@ const AddPhotos = ({ sessionId }) => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           console.log(downloadURL)
           const photosRef = doc(
-            collection(db, 'photoSessions', sessionId, 'photos')
+            db,
+            'photoSessions',
+            sessionId,
+            'photos',
+            fileName
           )
-          setDoc(photosRef, {
-            id: photosRef.id,
-            url: downloadURL,
-            name: fileName,
-          })
+
+          if (!isThumb) {
+            setDoc(
+              photosRef,
+              {
+                id: photosRef.id,
+                url: downloadURL,
+                name: fileName,
+                width: file.width,
+                height: file.height,
+              },
+              {merge: true}
+            )
+          } else {
+            setDoc(photosRef, {resizedUrl: downloadURL}, {merge: true})
+          }
         })
       }
     )
   }
 
+  const resizeHandler = async (file, size, isThumb) => {
+    const config = {
+      file: file,
+      maxSize: size,
+    }
+    let name = file.name
+    const resizedImage = await resizeImage(config, name)
+    await handleUpload(resizedImage, name, isThumb)
+  }
   const changeHandler = async (e) => {
     let selected = e.target.files
 
     for (let i = 0; i < selected.length; i++) {
       const file = selected[i]
-      const config = {
-        file: file,
-        maxSize: 500,
-      }
-      let name = file.name
-      const resizedImage = await resizeImage(config, name)
-
-      await handleUpload(resizedImage, name)
+      await resizeHandler(file, 1960, false)
+      await resizeHandler(file, 500, true)
     }
   }
   /* Utility function to convert a canvas to a BLOB */
@@ -65,7 +83,7 @@ const AddPhotos = ({ sessionId }) => {
       uInt8Array[i] = raw.charCodeAt(i)
     }
 
-    return new Blob([uInt8Array], { type: contentType })
+    return new Blob([uInt8Array], {type: contentType})
   }
 
   var resizeImage = function (settings) {
@@ -96,7 +114,8 @@ const AddPhotos = ({ sessionId }) => {
 
       // return canvas.toBlob('image/jpeg')
 
-      return dataURLToBlob(dataUrl)
+      let res = dataURLToBlob(dataUrl)
+      return {file: res, width: width, height: height}
     }
     return new Promise(function (ok, no) {
       if (!file.type.match(/image.*/)) {

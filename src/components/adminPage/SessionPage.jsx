@@ -1,20 +1,16 @@
-// import styled from '@emotion/styled'
 import styled from '@emotion/styled/macro'
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  updateDoc,
-} from 'firebase/firestore'
-import { deleteObject, ref } from 'firebase/storage'
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { Button } from '../../components/ui/Button'
-import { db, storage } from '../../firebase'
-import AddPhotos from './components/AddPhotos'
-import PhotoCard from './components/PhotoCard'
+import {doc, getDoc, updateDoc} from 'firebase/firestore'
+import React, {useContext, useEffect, useState} from 'react'
+import {useParams} from 'react-router-dom'
+import AddPhotos from './AddPhoto/AddPhotos'
+import Modal from '../Modal'
+import {Button} from '../ui/Button'
+import {PhotosContext} from '../../context/PhotosContext'
+import {db} from '../../firebase'
+import {GoChevronRight} from 'react-icons/go'
+import {GoChevronLeft} from 'react-icons/go'
+
+import PhotoCard from './PhotoCard'
 
 const Container = styled.div``
 const SessionHeader = styled.div`
@@ -53,26 +49,14 @@ const OptionsBar = styled.div`
 `
 const SessionPage = () => {
   const params = useParams()
-  const [photos, setPhotos] = useState([])
+  const [isOpen, setIsOpen] = useState(false)
+  const [photoIndex, setPhotoIndex] = useState(1)
+
   const [photoSession, setPhotoSession] = useState({})
+  const {photos, getPhotos, deletePhotos} = useContext(PhotosContext)
 
   useEffect(() => {
-    const getPhotos = async () => {
-      const photosRef = collection(
-        db,
-        'photoSessions',
-        params.sessionId,
-        'photos'
-      )
-      const photos = await getDocs(photosRef)
-      let res = []
-
-      photos.forEach((photo) => {
-        res.push(photo.data())
-      })
-      setPhotos(res)
-    }
-    getPhotos()
+    getPhotos(params.sessionId)
   }, [params.sessionId])
 
   useEffect(() => {
@@ -92,18 +76,19 @@ const SessionPage = () => {
     console.log(res)
   }
 
-  const onDelete = async (name, photoId) => {
-    console.log(name)
-    const imgStorageRef = ref(storage, `images/${params.sessionId}/${name}`)
-    const imgRef = doc(db, 'photoSessions', params.sessionId, 'photos', photoId)
+  const openGallery = (index) => {
+    setIsOpen(true)
+    setPhotoIndex(index)
+  }
+  const nextPhoto = () => {
+    console.log(photos.length, photoIndex)
 
-    deleteDoc(imgRef)
-    const filteredPhotos = photos.filter((photo) => photo.id !== photoId)
-    setPhotos(filteredPhotos)
-
-    deleteObject(imgStorageRef)
-      .then(() => {})
-      .catch(console.log('error'))
+    if (photoIndex < photos.length) {
+      setPhotoIndex((prevIntex) => prevIntex + 1)
+    }
+  }
+  const prevPhoto = () => {
+    setPhotoIndex((prevIntex) => prevIntex - 1)
   }
 
   return (
@@ -124,15 +109,30 @@ const SessionPage = () => {
       </SessionHeader>
       <AddPhotos sessionId={params.sessionId} />
       <OptionsBar />
+      <Modal
+        handleClose={() => setIsOpen(false)}
+        isOpen={isOpen}
+        width='100vw'
+        heigth='90vh'
+      >
+        <div>
+          <GoChevronLeft onClick={prevPhoto} />
+          <GoChevronRight onClick={nextPhoto} />
+          <img src={photos[photoIndex]?.url} alt='' />
+        </div>
+      </Modal>
       <PhotoGallery>
-        {photos.map((photo) => (
+        {photos.map((photo, index) => (
           <PhotoCard
+            index={index}
             key={photo.id}
-            url={photo.url}
+            url={photo.resizedUrl}
             name={photo.name}
             photoId={photo.id}
+            sessionId={params.sessionId}
             setMainImg={addImage}
-            deletePhoto={onDelete}
+            deletePhoto={deletePhotos}
+            displayPhoto={openGallery}
           ></PhotoCard>
         ))}
       </PhotoGallery>

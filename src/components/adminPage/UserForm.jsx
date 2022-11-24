@@ -1,11 +1,10 @@
 import React from 'react'
-import { useForm } from 'react-hook-form'
+import {useForm} from 'react-hook-form'
 import styled from 'styled-components'
-import { createUserWithEmailAndPassword, signOut } from 'firebase/auth'
-import { auth, db } from '../../../firebase'
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore'
-import { Navigate, useNavigate } from 'react-router-dom'
-import CustomInput from '../../../components/ui/CustomInput'
+import {functions} from '../../firebase'
+import {Navigate, useNavigate} from 'react-router-dom'
+import CustomInput from '../../components/ui/CustomInput'
+import {httpsCallable} from 'firebase/functions'
 
 const FormCard = styled.div`
   margin-top: 60px;
@@ -16,34 +15,22 @@ const FormControl = styled.div`
   display: flex;
   flex-direction: column;
 `
-const TextInput = styled.input`
-  padding: 0.6rem 1rem;
-  outline: none;
-  border: none;
-  border-bottom: 1px solid lightgray;
-`
 
 const UserForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
   } = useForm()
 
-  const navitage = useNavigate()
+  // const navitage = useNavigate()
   const submit = async (data) => {
     console.log(data)
-    try {
-      await createUserWithEmailAndPassword(auth, data.email, data.password)
-      await setDoc(doc(db, 'users', data.email), {
-        ...data,
-        timeStamp: serverTimestamp(),
-      })
-      navitage(-1)
-    } catch (err) {
-      console.log(err)
-      console.log('error')
-    }
+    const newUser = httpsCallable(functions, 'addUser')
+    newUser({
+      ...data,
+      displayName: `${data.firstName} ${data.lastName}`,
+    })
   }
 
   return (
@@ -56,7 +43,7 @@ const UserForm = () => {
               type='text'
               text='Imię'
               name='firstName'
-              reg={{ ...register('firstName', { required: true }) }}
+              reg={{...register('firstName', {required: true})}}
             />
             {errors.firstName && <p>To pole nie może być puste</p>}
             <FormControl>
@@ -64,7 +51,7 @@ const UserForm = () => {
                 type='text'
                 text='Nazwisko'
                 name='lastName'
-                reg={{ ...register('lastName', { required: true }) }}
+                reg={{...register('lastName', {required: true})}}
               />
               {errors.lastName && <p>To pole nie może być puste</p>}
             </FormControl>
@@ -72,7 +59,7 @@ const UserForm = () => {
               <CustomInput
                 type='email'
                 text='email'
-                reg={{ ...register('email', { required: true }) }}
+                reg={{...register('email', {required: true})}}
               />
               {errors.email && <p>To pole nie może być puste</p>}
             </FormControl>
@@ -80,7 +67,7 @@ const UserForm = () => {
               <CustomInput
                 type='password'
                 text='Hasło'
-                reg={{ ...register('password', { required: true }) }}
+                reg={{...register('password', {required: true})}}
               />
             </FormControl>
 

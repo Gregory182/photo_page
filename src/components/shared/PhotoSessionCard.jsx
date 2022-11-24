@@ -1,9 +1,7 @@
-import { deleteDoc, doc } from 'firebase/firestore'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import styled from 'styled-components'
-import { Button } from '../../../components/ui/Button'
-import { db } from '../../../firebase'
+import {Button} from '../ui/Button'
 
 const StyledCard = styled.div`
   max-width: 350px;
@@ -36,20 +34,28 @@ const StyledSessionBody = styled.div`
   overflow: hidden;
 `
 const ImageContainer = styled.div`
-  width: 90%;
-  height: 90%;
+  width: 85%;
+  height: 85%;
+  overflow: hidden;
 `
 const Image = styled.img`
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  aspect-ratio: 16 /9;
+  object-fit: cover;
 `
-const PhotoSessionCard = ({ session, deleteSession }) => {
+const PhotoSessionCard = ({session, deleteSession, user}) => {
   return (
     <StyledCard>
       <StyledSessionHeader>
         <StyledSessionName>
-          <Link to={`/admin/sessions/${session?.id}`}>{session.name}</Link>
+          {user ? (
+            <Link to={`/admin/sessions/${session?.id}`}>{session.name}</Link>
+          ) : (
+            <Link to={`${session?.id}`}>{session.name}</Link>
+          )}
+
           <small>{session.user}</small>
         </StyledSessionName>
         <div>

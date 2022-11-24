@@ -1,11 +1,11 @@
-import { collection, doc, setDoc } from 'firebase/firestore'
+import {collection, doc, setDoc} from 'firebase/firestore'
 import React from 'react'
-import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
-import { db } from '../../../firebase'
+import {useForm} from 'react-hook-form'
+import {useNavigate} from 'react-router-dom'
+import {db} from '../../firebase'
 
-const SessionForm = ({ userId }) => {
-  const { register, handleSubmit } = useForm()
+const SessionForm = ({userId}) => {
+  const {register, handleSubmit} = useForm()
   const navigate = useNavigate()
 
   const submit = async (data) => {

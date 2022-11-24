@@ -16,9 +16,8 @@ export const darkTheme = {
 
 const colors = {
   darkBg: '#141416',
-
   lightBg: '#F3F7FB',
-
+  turuise: '#0E121A',
   green: '#427B62',
   goldish: '#D4B18A',
 }

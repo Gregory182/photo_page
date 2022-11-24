@@ -20,6 +20,9 @@ const InputStyled = styled.div`
     color: #4141 41;
     background-color: inherit;
     filter: none;
+    &:-webkit-autofill {
+      -webkit-box-shadow: inset 0 0 0px 9999px white;
+    }
   }
   & input:focus + label span,
   input:not(:placeholder-shown) + label span {

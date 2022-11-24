@@ -1,7 +1,7 @@
 import React from 'react'
-import MainPage from './components/MainPage'
-import Sidebar from './components/Sidebar'
-import { PageContainer } from './components/styled'
+import MainPage from './MainPage'
+import Sidebar from './Sidebar'
+import {PageContainer} from '../adminPage/styled'
 
 const AdminPanel = () => {
   return (

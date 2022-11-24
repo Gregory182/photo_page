@@ -1,20 +1,12 @@
-import React, { useEffect } from 'react'
-import { DataGrid } from '@mui/x-data-grid'
+import React, {useEffect} from 'react'
+import {DataGrid} from '@mui/x-data-grid'
 import styled from 'styled-components'
-import { SButton } from '../../../components/styled/Components'
-import { Link, useNavigate } from 'react-router-dom'
-import {
-  collection,
-  query,
-  where,
-  getDoc,
-  getDocs,
-  collectionGroup,
-  doc,
-} from 'firebase/firestore'
-import { db } from '../../../firebase'
-import { useState } from 'react'
-import Modal from '../../../components/Modal'
+import {SButton} from '../styled/Components'
+import {Link, useNavigate} from 'react-router-dom'
+import {collection, getDocs} from 'firebase/firestore'
+import {db} from '../../firebase'
+import {useState} from 'react'
+import Modal from '../Modal'
 import SessionForm from './SessionForm'
 
 const StyledMenuBar = styled.div`
@@ -35,47 +27,30 @@ const Users = () => {
     {
       field: 'firstName',
       headerName: 'Imię',
-      width: 200,
-      renderCell: ({ row }) => {
+      width: 150,
+      renderCell: ({row}) => {
         return <Link to={row.id}>{row.firstName}</Link>
       },
     },
     {
       field: 'lastName',
       headerName: 'Nazwisko',
-      width: 200,
+      width: 150,
     },
     {
       field: 'email',
       headerName: 'Adres e-mail',
-      width: 200,
+      width: 300,
     },
     {
       field: 'galerie',
       headerName: 'Galerie',
       width: 100,
-      renderCell: ({ row }) => (
+      renderCell: ({row}) => (
         <span onClick={() => openModal(row.id)}>Dodaj sesję</span>
       ),
     },
   ]
-  useEffect(() => {
-    const fetchPhotos = async () => {
-      const photosRef = collection(
-        db,
-        'users',
-        'nmSdLtOf1fgYAuLZhYeE0H1GWXJ3',
-        'galerie'
-      )
-      const q = query(photosRef)
-
-      const qs = await getDocs(q)
-      qs.forEach((el) => {
-        console.log(el.data())
-      })
-    }
-    fetchPhotos()
-  }, [])
 
   const [users, setUsers] = useState([])
 
@@ -84,7 +59,7 @@ const Users = () => {
       const data = await getDocs(collection(db, 'users'))
       let res = []
       data.forEach((doc) => {
-        res.push({ id: doc.id, ...doc.data() })
+        res.push({id: doc.id, ...doc.data()})
       })
       console.log(res)
       setUsers(res)
@@ -96,11 +71,12 @@ const Users = () => {
     <>
       <StyledMenuBar>
         <SButton onClick={() => navigate('add')}>Dodaj</SButton>
+        {/* <SButton onClick={setAdmin}>Dodaj</SButton> */}
       </StyledMenuBar>
       <Modal handleClose={() => setIsOpen(false)} isOpen={isOpen}>
         <SessionForm userId={user} />
       </Modal>
-      <DataGrid style={{ height: '500px' }} columns={columns} rows={users} />
+      <DataGrid style={{height: '500px'}} columns={columns} rows={users} />
     </>
   )
 }

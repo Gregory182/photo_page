@@ -51,16 +51,25 @@ const Button = styled.button`
   padding: 0.2em 1em;
 `
 
-const PhotoCard = ({ url, name, photoId, setMainImg, deletePhoto }) => {
+const PhotoCard = ({
+  index,
+  url,
+  name,
+  photoId,
+  sessionId,
+  setMainImg,
+  deletePhoto,
+  displayPhoto,
+}) => {
   return (
     <Card>
       <ImageDiv>
         <p>{name}</p>
-        <img src={url} alt='zdjęcie' />
+        <img src={url} alt='zdjęcie' onClick={() => displayPhoto(index)} />
       </ImageDiv>
       <ImageOptions>
         <Button onClick={() => setMainImg(url)}>Ustaw jako główne</Button>
-        <Button danger onClick={() => deletePhoto(name, photoId)}>
+        <Button danger onClick={() => deletePhoto(sessionId, photoId, name)}>
           Usuń
         </Button>
       </ImageOptions>

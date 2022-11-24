@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import Cards from '../components/portfolio/Cards'
-import { cards } from '../mocks'
+import Cards from '../../components/portfolio/Cards'
+import {cards} from '../../mocks'
 
 const Container = styled.div`
   width: 1300px;
@@ -24,8 +24,6 @@ const Portfolio = () => {
       {cards.map((item, ind) => (
         <Cards key={ind} item={item} />
       ))}
-      {/* <Cards />
-          <Cards reverse /> */}
     </Container>
   )
 }

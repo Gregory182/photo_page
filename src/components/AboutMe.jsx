@@ -19,17 +19,28 @@ const FirstSection = styled.section`
     left: 320px;
     top: 270px;
   }
+  @media (max-width: 768px) {
+    height: calc((100vw) * 0.5625);
+    width: 100%;
+    p {
+      left: 20px;
+      top: 60%;
+    }
+  }
+  /* @media (max-width: 338px) {
+    max-height: 200px;
+    width: 100%;
+  } */
 `
 
 const MockTemp = styled.div`
-  width: 100%;
+  width: 80%;
   height: 500px;
 `
 
 const InnerContainer = styled.section`
   align-items: center;
   display: flex;
-
   font-size: 1.25rem;
   gap: 60px;
   justify-content: center;
@@ -48,13 +59,24 @@ const InnerContainer = styled.section`
     width: 450px;
     font-size: 24px;
     margin: 30px 0;
+    padding: 0 16px;
+  }
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 40px 0px;
+    overflow: hidden;
+    img {
+      width: 100%;
+    }
   }
 `
 const SLink = styled(Link)`
   background-color: transparent;
   border: 2px solid #3c3c3c;
   color: #2f2f2f;
-  display: block;
+  display: inline-block;
   font-weight: bold;
   margin: 120px auto;
   padding: 0.5em 1em;
@@ -71,17 +93,26 @@ const SLink = styled(Link)`
 const FullWidthSection = styled.section`
   align-items: center;
   display: flex;
-
-  height: 500px;
+  min-height: 500px;
   width: 100vw;
   background-color: #e8e8e8;
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    margin: 40px 0px;
+  }
 `
 const FullWidthSectionWhite = styled.section`
   align-items: center;
   display: flex;
 
-  height: 500px;
+  min-height: 500px;
   width: 100vw;
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    margin: 40px 0px;
+  }
 `
 
 const TextPart = styled.div`
@@ -94,6 +125,10 @@ const PhotoPart = styled.div`
   flex: 1;
   display: flex;
   justify-content: center;
+  margin: 0 24px;
+  @media (max-width: 768px) {
+    margin-bottom: 50px;
+  }
 `
 
 function AboutMe() {
