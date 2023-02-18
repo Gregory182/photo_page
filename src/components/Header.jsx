@@ -97,10 +97,10 @@ function Header() {
     <StyledHeader>
       <Container>
         <StyledNavList>
-          <StyledLink to='home'>Start</StyledLink>
+          <StyledLink to='/home'>Start</StyledLink>
           <StyledLink to='/oferta'>Blog</StyledLink>
           <StyledLink to='/oferta'>Oferta</StyledLink>
-          <StyledLink id='logo' to='/'>
+          <StyledLink id='logo' to='/home'>
             <Image src={Logo} alt='RozPhotos' />
           </StyledLink>
           <StyledLink to='/portfolio'>Portfolio</StyledLink>

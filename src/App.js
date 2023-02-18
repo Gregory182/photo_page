@@ -4,7 +4,7 @@ import Home from './pages/blog/Home'
 import PhotoPrev from './pages/blog/PhotoPrev'
 import {Globalstyles} from './styles/GlobalStyles'
 
-import {Route, Routes, useLocation} from 'react-router-dom'
+import {Navigate, Route, Routes, useLocation} from 'react-router-dom'
 import Portfolio from './pages/blog/Portfolio'
 import {useState} from 'react'
 import {ThemeProvider} from 'styled-components'
@@ -55,6 +55,7 @@ function App() {
                 <Route path='/' element={<h1>co jest</h1>} />
               </Routes> */}
               <Routes>
+               <Route path='/'  element={<Navigate to='/home' />} />
                 <Route path='/home' element={<Home />} />
                 <Route path='/about' element={<>About</>} />
                 <Route
