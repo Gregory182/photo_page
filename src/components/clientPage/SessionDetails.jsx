@@ -1,20 +1,22 @@
 import styled from '@emotion/styled/macro'
 import {doc, getDoc, updateDoc} from 'firebase/firestore'
 import React, {useContext, useEffect, useState} from 'react'
-import {useParams} from 'react-router-dom'
+import {Link, NavLink, useParams} from 'react-router-dom'
 import Modal from '../Modal'
 import {Button} from '../ui/Button'
 import {PhotosContext} from '../../context/PhotosContext'
 import {db} from '../../firebase'
 import PhotoSlide from '../shared/PhotoSlide'
-import {GoChevronLeft, GoChevronRight} from 'react-icons/go'
+import {GrBasket} from 'react-icons/gr'
+
+import {useFirestore} from '../../hooks/userFirestore'
 
 const OptionsDiv = styled.div`
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 5rem;
+  height: 3.5rem;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -23,9 +25,10 @@ const OptionsDiv = styled.div`
     rgba(0, 0, 0, 0.5) 0%,
     rgba(0, 0, 0, 0) 100%
   );
-  opacity: 0;
+  background: ${({dodany}) => (dodany ? '#f9f9f9' : '')};
+  opacity: ${({dodany}) => (dodany == true ? 1 : 0)};
   transition: all ease-in-out 150ms;
-  z-index: 100;
+  z-index: 10;
 `
 
 const PhotoCard = styled.div`
@@ -51,11 +54,32 @@ const PhotoCard = styled.div`
   }
 `
 
-const Container = styled.div``
+const Container = styled.div`
+  /* width: 1000px; */
+`
 const SessionHeader = styled.div`
+  background-color: #f9f9f9;
+  position: sticky;
+
+  top: 0;
   margin-top: 40px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  padding: 10px;
+  z-index: 20;
+`
+const HeaderCheckoutSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+`
+
+const SNavLink = styled(NavLink)`
+  text-decoration: none;
+  color: #000;
+  border: 1px solid #000;
+  padding: 14px;
 `
 
 const InfoSection = styled.div`
@@ -74,11 +98,10 @@ const PhotoGallery = styled.div`
   display: grid;
   grid-auto-rows: 250px;
   align-items: flex-start;
-  /* height: auto; */
-
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1.2rem;
   margin: 40px 0 160px 0;
+  padding: 5px;
 
   @media (max-width: 1500px) {
     grid-template-columns: 1fr 1fr;
@@ -89,28 +112,50 @@ const OptionsBar = styled.div`
   height: 50px;
   border: 1px solid lightgray;
   margin-top: 20px;
+  display: flex;
+  ul {
+    display: flex;
+    /* background-color: red; */
+    align-items: center;
+    gap: 10px;
+    li {
+      list-style: none;
+    }
+  }
 `
 const SessionDetails = () => {
-  const params = useParams()
+  const {sessionId} = useParams()
   const [isOpen, setIsOpen] = useState(false)
   const [photoIndex, setPhotoIndex] = useState(1)
+  const [selectedCount, setSelectedCount] = useState(0)
 
   const [photoSession, setPhotoSession] = useState({})
-  const {photos, getPhotos} = useContext(PhotosContext)
+  const {addPhotoToBasket} = useContext(PhotosContext)
+  const {docs: photos, selectedPhotosNumber} = useFirestore(
+    `photoSessions/${sessionId}/photos`
+  )
 
   useEffect(() => {
-    getPhotos(params.sessionId)
-  }, [params.sessionId])
+    // getPhotos(sessionId)
+  }, [sessionId])
 
   useEffect(() => {
     const getSession = async () => {
-      const sessionRef = doc(db, 'photoSessions', params.sessionId)
+      const sessionRef = doc(db, 'photoSessions', sessionId)
       const res = await getDoc(sessionRef)
       console.log(res)
       setPhotoSession(res.data())
     }
     getSession()
-  }, [params.sessionId])
+  }, [])
+
+  const b = () => {
+    let num = photos.reduce((acc, photo) => {
+      return acc + photo.inBasket
+    }, 0)
+    console.log(num)
+  }
+
   const nextPhoto = () => {
     console.log(photos.length, photoIndex)
 
@@ -129,6 +174,12 @@ const SessionDetails = () => {
     setIsOpen(false)
   }
 
+  const addToBasket = (sessionId, photoId, isInBasket) => {
+    const action = isInBasket ? 'remove' : 'add'
+    addPhotoToBasket(sessionId, photoId, action)
+    b()
+  }
+
   return (
     <Container>
       <SessionHeader>
@@ -141,12 +192,22 @@ const SessionDetails = () => {
           </SessionStatus>
           <div>{photoSession.user}</div>
         </InfoSection>
-        <div>
+        <HeaderCheckoutSection>
+          <GrBasket style={{width: '2em', height: '2em'}} />
+          <p>{selectedPhotosNumber} </p>
           <Button>Wyślij Sesje</Button>
-        </div>
+        </HeaderCheckoutSection>
       </SessionHeader>
 
-      <OptionsBar />
+      <OptionsBar>
+        <ul>
+          <li>
+            <SNavLink to='info'>Informacje o sesji</SNavLink>
+          </li>
+          <li>Zdjęcia</li>
+          <li>Zgody i dokumenty</li>
+        </ul>
+      </OptionsBar>
       <Modal
         handleClose={() => setIsOpen(false)}
         isOpen={isOpen}
@@ -161,7 +222,7 @@ const SessionDetails = () => {
         />
       </Modal>
       <PhotoGallery>
-        {photos.map((photo, index) => (
+        {photos?.map((photo, index) => (
           <PhotoCard
             key={photo.id}
             url={photo.resizedUrl}
@@ -170,8 +231,12 @@ const SessionDetails = () => {
             horizontal={photo.width > photo.height ? 'true' : 'false'}
           >
             <img src={photo.url} alt='' onClick={() => openGallery(index)} />
-            <OptionsDiv>
-              <button>Do koszyka</button>
+            <OptionsDiv dodany={photo.inBasket}>
+              <button
+                onClick={() => addToBasket(sessionId, photo.id, photo.inBasket)}
+              >
+                {photo.inBasket ? 'Usuń z koszyka' : 'Dodaj do koszyka'}
+              </button>
             </OptionsDiv>
           </PhotoCard>
         ))}

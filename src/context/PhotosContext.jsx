@@ -1,4 +1,11 @@
-import {collection, deleteDoc, doc, getDoc, getDocs} from 'firebase/firestore'
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from 'firebase/firestore'
 import {deleteObject, ref} from 'firebase/storage'
 import {createContext, useState} from 'react'
 import {db, storage} from '../firebase'
@@ -20,8 +27,13 @@ export const PhotosContextProvider = ({children}) => {
     console.log(res)
   }
 
+  const addPhotoToBasket = (sessionId, photoId, action) => {
+    const imgRef = doc(db, 'photoSessions', sessionId, 'photos', photoId)
+    const choosen = action === 'add' ? 1 : 0
+    updateDoc(imgRef, {inBasket: choosen})
+  }
+
   const deletePhotos = async (sessionId, photoId, name) => {
-    console.log(name)
     const imgStorageRef = ref(storage, `images/${sessionId}/${name}`)
     const imgStorageRefRes = ref(storage, `images/${sessionId}/resized_${name}`)
     const imgRef = doc(db, 'photoSessions', sessionId, 'photos', photoId)
@@ -39,7 +51,9 @@ export const PhotosContextProvider = ({children}) => {
   }
 
   return (
-    <PhotosContext.Provider value={{photos, getPhotos, deletePhotos}}>
+    <PhotosContext.Provider
+      value={{photos, getPhotos, deletePhotos, addPhotoToBasket}}
+    >
       {children}
     </PhotosContext.Provider>
   )

@@ -52,7 +52,7 @@ function App() {
           <StyledContainer>
             <PhotosContextProvider>
               <Routes>
-                <Route path='/' element={<h1>co jest</h1>} />
+                {/* <Route path='/' element={<h1>co jest</h1>} /> */}
               </Routes>
               <Routes>
                 <Route path='/' element={<Home />} />
