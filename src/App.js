@@ -41,21 +41,21 @@ function App() {
       <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
         <AuthProvider>
           <Globalstyles />
-          <Routes>
+          {/* <Routes>
             {console.log(location.pathname)}
             <Route path='adm' element={<div>ok</div>} />
-          </Routes>
+          </Routes> */}
           {!location.pathname.startsWith('/admin') &&
           !location.pathname.startsWith('/client-panel') ? (
             <Header />
           ) : null}
           <StyledContainer>
             <PhotosContextProvider>
+              {/* <Routes>
+                <Route path='/' element={<h1>co jest</h1>} />
+              </Routes> */}
               <Routes>
-                {/* <Route path='/' element={<h1>co jest</h1>} /> */}
-              </Routes>
-              <Routes>
-                <Route path='/' element={<Home />} />
+                <Route path='/home' element={<Home />} />
                 <Route path='/about' element={<>About</>} />
                 <Route
                   path='/admin'
@@ -71,9 +71,9 @@ function App() {
                   <Route path='sessions' element={<PhotoSessions />} />
                   <Route path='sessions/:sessionId' element={<SessionPage />} />
                 </Route>
-                <Route path='oferta' element={<Offer />} />
-                <Route path='login' element={<Login />} />
-                <Route path='portfolio'>
+                <Route path='/oferta' element={<Offer />} />
+                <Route path='/login' element={<Login />} />
+                <Route path='/portfolio'>
                   <Route index element={<Portfolio />} />
                   <Route path=':type' element={<h1>Galery</h1>} />
                 </Route>

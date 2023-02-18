@@ -133,7 +133,6 @@ const PhotoPart = styled.div`
 
 function AboutMe() {
 
-  console.log(process.env)
   return (
     <>
       <FirstSection>

@@ -97,15 +97,15 @@ function Header() {
     <StyledHeader>
       <Container>
         <StyledNavList>
-          <StyledLink to=''>Start</StyledLink>
-          <StyledLink to='oferta'>Blog</StyledLink>
-          <StyledLink to='oferta'>Oferta</StyledLink>
-          <StyledLink id='logo' to=''>
+          <StyledLink to='home'>Start</StyledLink>
+          <StyledLink to='/oferta'>Blog</StyledLink>
+          <StyledLink to='/oferta'>Oferta</StyledLink>
+          <StyledLink id='logo' to='/'>
             <Image src={Logo} alt='RozPhotos' />
           </StyledLink>
-          <StyledLink to='portfolio'>Portfolio</StyledLink>
-          <StyledLink to='oferta'> O mnie</StyledLink>
-          <StyledLink to='login'>Kontakt</StyledLink>
+          <StyledLink to='/portfolio'>Portfolio</StyledLink>
+          <StyledLink to='/oferta'> O mnie</StyledLink>
+          <StyledLink to='/login'>Kontakt</StyledLink>
         </StyledNavList>
         <Burger>
           <div>
