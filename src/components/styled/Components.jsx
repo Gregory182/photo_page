@@ -13,4 +13,3 @@ export const SButton = styled.button`
   transition: ease-in-out 100ms;
 `
 
-export const SFrmControl = styled.div``

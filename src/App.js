@@ -1,107 +1,107 @@
-import Header from './components/Header'
-import {StyledContainer} from './components/styled/StyledContainer'
-import Home from './pages/blog/Home'
-import PhotoPrev from './pages/blog/PhotoPrev'
-import {Globalstyles} from './styles/GlobalStyles'
+import { useState } from "react";
+import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
 
-import {Navigate, Route, Routes, useLocation} from 'react-router-dom'
-import Portfolio from './pages/blog/Portfolio'
-import {useState} from 'react'
-import {ThemeProvider} from 'styled-components'
-import {darkTheme, lightTheme} from './styles/themes'
-import Offer from './pages/offer/Offer'
-import Footer from './components/Footer'
-import Login from './pages/blog/Login'
-import {AuthProvider} from './context/AuthContext'
-import {RequireAuth, RequireAuthAdmin} from './RequireAuth'
-import {PhotosContextProvider} from './context/PhotosContext'
-import AdminPanel from './components/layout/AdminPanel'
+import { Globalstyles } from "./styles/GlobalStyles";
 
-import Sessions from './components/clientPage/Sessions'
+import Portfolio from "./features/blog/portfolio/Portfolio";
 
-import Users from './components/adminPage/Users'
-import UserForm from './components/adminPage/UserForm'
-import UserDetail from './components/adminPage/UserDetail'
-import PhotoSessions from './components/adminPage/PhotoSessions'
-import SessionPage from './components/adminPage/SessionPage'
-import ClientPanel from './components/layout/ClientPanel'
-import SessionDetails from './components/clientPage/SessionDetails'
+import { darkTheme, lightTheme } from "./styles/themes";
+import Offer from "./features/blog/offer/Offer";
+import Login from "./features/auth/Login";
+import { AuthProvider } from "./context/AuthContext";
+import { RequireAuth, RequireAuthAdmin } from "./RequireAuth";
+import { PhotosContextProvider } from "./context/PhotosContext";
+
+import AboutMe from "./features/blog/about/AboutMe";
+import AdminPanel from "./components/layouts/AdminPanel";
+import Sessions from "./features/admin/client/Sessions";
+import Users from "./features/admin/admin/Users";
+import UserForm from "./features/admin/admin/UserForm";
+import UserDetail from "./features/admin/admin/UserDetail";
+import PhotoSessions from "./features/admin/admin/PhotoSessions";
+import SessionPage from "./features/admin/admin/SessionPage";
+import ClientPanel from "./components/layouts/ClientPanel";
+import SessionDetails from "./features/admin/client/SessionDetails";
+import Sidebar from "./components/layouts/Sidebar";
+
+import { BlogLayout } from "./components/layouts/BlogLayout";
+import Contact from "./features/blog/contact/Contact";
 
 function App() {
-  const [theme, setTheme] = useState('light')
-  // const location = useLocation()
+  const [theme, setTheme] = useState("light");
   const themeToggler = () => {
-    theme === 'light' ? setTheme('dark') : setTheme('light')
-  }
+    theme === "light" ? setTheme("dark") : setTheme("light");
+  };
 
-  const location = useLocation()
 
   return (
     <>
-      <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+      <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
         <AuthProvider>
           <Globalstyles />
-          {/* <Routes>
-            {console.log(location.pathname)}
-            <Route path='adm' element={<div>ok</div>} />
-          </Routes> */}
-          {!location.pathname.startsWith('/admin') &&
-          !location.pathname.startsWith('/client-panel') ? (
-            <Header />
-          ) : null}
-          <StyledContainer>
-            <PhotosContextProvider>
-              {/* <Routes>
-                <Route path='/' element={<h1>co jest</h1>} />
-              </Routes> */}
-              <Routes>
-               <Route path='/'  element={<Navigate to='/home' />} />
-                <Route path='/home' element={<Home />} />
-                <Route path='/about' element={<>About</>} />
-                <Route
-                  path='/admin'
-                  element={
-                    <RequireAuthAdmin>
-                      <AdminPanel />
-                    </RequireAuthAdmin>
-                  }
-                >
-                  <Route path='clients' element={<Users />} />
-                  <Route path='clients/:id' element={<UserDetail />} />
-                  <Route path='clients/add' element={<UserForm />} />
-                  <Route path='sessions' element={<PhotoSessions />} />
-                  <Route path='sessions/:sessionId' element={<SessionPage />} />
-                </Route>
-                <Route path='/oferta' element={<Offer />} />
-                <Route path='/login' element={<Login />} />
-                <Route path='/portfolio'>
-                  <Route index element={<Portfolio />} />
-                  <Route path=':type' element={<h1>Galery</h1>} />
-                </Route>
-                <Route path='/prevs' element={<PhotoPrev />} />
 
-                <Route
-                  path='/client-panel'
-                  element={
-                    <RequireAuth>
-                      <ClientPanel />
-                    </RequireAuth>
-                  }
-                >
-                  <Route path='client-sessions' element={<Sessions />} />
-                  <Route
-                    path='client-sessions/:sessionId'
-                    element={<SessionDetails />}
-                  />
+          <PhotosContextProvider>
+            <Routes>
+              <Route element={<BlogLayout />}>
+                <Route path="/" element={<Navigate to="/home" />} />
+                <Route path="/about" element={<Offer />} />
+                <Route path="/home" element={<AboutMe />} />
+                <Route path="/oferta" element={<Offer />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/kontakt" element={<Contact />} />
+                <Route path="/portfolio">
+                  <Route index element={<Portfolio />} />
+                  <Route path=":type" element={<h1>Galery</h1>} />
                 </Route>
-              </Routes>
-              {/* <Footer /> */}
-            </PhotosContextProvider>
-          </StyledContainer>
+              </Route>
+
+              <Route
+                path="/admin"
+                element={
+                  <RequireAuthAdmin>
+                    <AdminPanel />
+                  </RequireAuthAdmin>
+                }
+              >
+                <Route path="clients" element={<Users />} />
+                <Route path="clients/:id" element={<UserDetail />} />
+                <Route path="clients/add" element={<UserForm />} />
+                <Route path="sessions" element={<PhotoSessions />} />
+                <Route path="sessions/:sessionId" element={<SessionPage />} />
+              </Route>
+
+              <Route
+                path="/client-panel"
+                element={
+                  <RequireAuth>
+                    <ClientPanel />
+                  </RequireAuth>
+                }
+              >
+                <Route path="client-sessions" element={<Sessions />} />
+                <Route
+                  path="client-sessions/:sessionId"
+                  element={<SessionDetails />}
+                />
+              </Route>
+            </Routes>
+          </PhotosContextProvider>
         </AuthProvider>
       </ThemeProvider>
     </>
-  )
+  );
 }
 
-export default App
+
+
+const PhotoAppLaylout = () => {
+  return (
+    <>
+      <Sidebar />
+      <Outlet />
+    </>
+  );
+};
+
+export default App;

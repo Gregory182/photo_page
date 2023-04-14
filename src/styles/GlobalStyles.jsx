@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from "styled-components";
 
 export const Globalstyles = createGlobalStyle`
   *,*::after,*::before{
@@ -9,9 +9,11 @@ export const Globalstyles = createGlobalStyle`
 
   body{
     font-family: 'Lato', sans-serif;
-    width:100vw;  
-    overflow-x:hidden;
+    background-color: #fff;
   }
 
-  
-`
+  #root{
+    height:100vh;
+    
+  }
+`;
