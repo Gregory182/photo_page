@@ -7,27 +7,27 @@ import Header from "../ui/header/Header";
 const BlogLayoutStyle = styled.div`
   display: flex;
   flex-direction: column;
-  /* height: 100%; */
-  padding-top: 120px;
-`;
+  height: 100%;
+  padding: 120px 0 0 0;
+  `;
 
 const Main = styled.main`
   background-color: #fff;
-`;
-const Fejk = styled.div`
-  width: 100%;
-  height: 10rem;
-  background: transparent !important;
+  flex:1;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
 `;
 
 export const BlogLayout = () => {
   return (
-    <BlogLayoutStyle>
+    <BlogLayoutStyle data-test-id='main-layout-div'>
       <Header />
-      <Main>
+      <Main data-test-id='main-div'>
         <Outlet />
       </Main>
-      <Fejk></Fejk>
       <Footer />
     </BlogLayoutStyle>
   );

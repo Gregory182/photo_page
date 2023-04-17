@@ -2,7 +2,7 @@ import {
   DescriptionDiv,
   ImageDiv,
   PortfolioContainer,
-} from './StyledPortfolio'
+} from './styles'
 
 const Cards = ({ item: { id, title, description, img } }) => {
   return (

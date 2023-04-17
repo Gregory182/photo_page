@@ -9,6 +9,7 @@ export const lightTheme = {
     secondary: "",
     succes: "",
     danger: "",
+    dts: "#f7f7f7"
   },
   mobile: "768px",
 };
@@ -31,6 +32,5 @@ const colorsToSink = {
   turuise: "#0E121A",
   green: "#427B62",
   goldish: "#D4B18A",
-  lightBlue: "#BFD4CB0",
   brownish: "#D6C8BF",
 };

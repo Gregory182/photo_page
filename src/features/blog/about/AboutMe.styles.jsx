@@ -35,9 +35,6 @@ export const MockTemp = styled.div`
   width: 100%;
   height: 500px;
   background-color:#fff;
-  box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.05),
-    rgba(0, 0, 0, 0.05) 0 0.625rem 0.9375rem -0.3125rem,
-    rgba(0, 0, 0, 0.04) 0 0.4375rem 0.4375rem -0.3125rem;
 `;
 
 export const Section = styled.section`
@@ -48,10 +45,11 @@ export const Section = styled.section`
   margin: 10px auto 50px auto;
   padding: 50px 0px;
   width: 100%;
+  /* background : radial-gradient(#8383837a 2px, transparent 4px) 0 0 / 110px 110px; */
 `;
 export const SvgDevider = styled.div`
   width: 100%;
-  background-color: #f8f9fa;
+  background-color: ${({theme})=>theme.colors.dts};
   /* overflow:hidden; */
   svg {
     filter: drop-shadow(0.625rem 0.3125rem 0.3125rem rgba(0, 0, 0, 0.03));
@@ -82,7 +80,7 @@ export const ImgWithButton = styled.div`
 
 export const InnerContainer = styled.section`
   align-items: center;
-  background-color: #f8f9fa;
+  background-color: ${({theme})=>theme.colors.dts};
   display: flex;
   font-size: 1.25rem;
   gap: 60px;

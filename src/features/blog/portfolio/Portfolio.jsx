@@ -4,10 +4,11 @@ import Cards from "./Cards";
 import { cards } from "../../../mocks";
 
 const Container = styled.div`
-  width: 1300px;
-  display: flex;
   align-items: center;
+  justify-content:center;
+  display: flex;
   flex-direction: column;
+  width: 1300px;
 `;
 const HWraper = styled.div`
   height: 130px;
@@ -17,7 +18,7 @@ const HWraper = styled.div`
 
 const Portfolio = () => {
   return (
-    <Container>
+    <Container data-test-id='container'>
       <HWraper>
         <h1>Portfolio</h1>
       </HWraper>

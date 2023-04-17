@@ -11,6 +11,7 @@ export const Flex = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+
 export const OfferDiv = styled.div`
   border: 1px solid ${({ theme }) => theme.bg1};
   display: flex;
