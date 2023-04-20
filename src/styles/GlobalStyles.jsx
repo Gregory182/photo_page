@@ -8,7 +8,10 @@ export const Globalstyles = createGlobalStyle`
   }
 
   body{
-    font-family: 'Lato', sans-serif;
+    /* color:#8E8E8F; */
+    /* font-family: 'Lato', sans-serif; */
+    font-family: "Montserrat",sans-serif;
+    font-weight: 400;
     background-color: #fff;
     overflow-x: hidden;
   }

@@ -8,7 +8,7 @@ const BlogLayoutStyle = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 120px 0 0 0;
+  padding: 80px 0 0 0;
   `;
 
 const Main = styled.main`

@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+
+
 export const FirstSection = styled.section`
   background: url("https://lh3.googleusercontent.com/pw/AL9nZEVefCrrrTNfdfh58eD0LrFC6ulukXneL5xKvY61BkKrGvjwOH4XVcoLVoE2D6PL_opjzguDaPvcBy-zzMtQbEgqsiDWQyD1qqYBrCg5qLbRVWRVS-GnRezTRcOQ1OU_9vfk7gW2syk4D8nCtWk5NAAI2g=w1391-h928-no?authuser=0");
   background-size: 100%;
@@ -43,7 +45,7 @@ export const Section = styled.section`
   justify-content: center;
   display: flex;
   margin: 10px auto 50px auto;
-  padding: 50px 0px;
+  padding: 20px 0px;
   width: 100%;
   /* background : radial-gradient(#8383837a 2px, transparent 4px) 0 0 / 110px 110px; */
 `;
@@ -73,8 +75,13 @@ export const ImgWithButton = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-top:50px;  
   img {
-    width: 420px;
+    width: 400px;
+    height: 600px;
+    object-fit:cover;
+    box-shadow: 2px 2px 50px 1px rgba(0,0,0,.4);
+}
   }
 `;
 
@@ -98,9 +105,10 @@ export const InnerContainer = styled.section`
   }
   p {
     width: 450px;
-    font-size: 24px;
+    font-size: 1.5rem;
     margin: 30px 0;
     padding: 0 16px;
+    text-align: justify;
   }
 
   @media (max-width: 768px) {
@@ -115,7 +123,7 @@ export const InnerContainer = styled.section`
   }
 `;
 export const SLink = styled(Link)`
-  background-color: transparent;
+  background-color: #fff;
   border: 2px solid #3c3c3c;
   color: #2f2f2f;
   display: inline-block;
@@ -123,7 +131,8 @@ export const SLink = styled(Link)`
   margin: 20px 0;
   padding: 0.5em 1em;
   text-decoration: none;
-  text-transform: capitalize;
+  text-transform: uppercase;
+  text-align:center;
   transition: all ease-in-out 120ms;
   width: 100%;
   &:hover {

@@ -10,7 +10,6 @@ const Form = styled.form``
 const Bg = styled.div`
   width: 100%;
   height: 100%;
-  /* background: linear-gradient(45deg, #d2d2d2, #7d7d7d); */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,11 +20,11 @@ const Bg = styled.div`
 
 const LoginContainer = styled.div`
   align-items: center;
-  border: 1px solid #1a4f5b50;
-  box-shadow: 0px 1px 10px #1a4f5b50;
-  border-radius: 20px;
+  border: 1px solid #243a3f50;
+  box-shadow: 0px 1px 10px #243a3f50;
+  border-radius: 6px;
   display: flex;
-  height: 350px;
+  height: 330px;
   flex-direction: column;
   justify-content: center;
   width: 500px;
@@ -44,8 +43,8 @@ const Input = styled.input`
   padding: 10px 12px;
   width: 100%;
   margin-top: 20px;
-  border: 2px solid #1a4f5b;
-  color: #1a4f5b;
+  border: 2px solid #243a3f80;
+  color: #243a3f;
   background-color: white;
   border-radius: 50px;
   cursor: pointer;

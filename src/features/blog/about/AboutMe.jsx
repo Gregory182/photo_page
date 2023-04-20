@@ -1,6 +1,7 @@
 import Kotel from "../../../images/kotel.png";
 import sisi from "../../../images/sisi.jpeg";
-
+import Foto1 from "../../../images/gucio1.jpg"
+import Foto2 from "../../../images/g2.jpg"
 import {
   InnerContainer,
   SLink,
@@ -12,8 +13,8 @@ import {
   Flex,
   ImgWithButton,
   SvgDevider,
-  Trans,
 } from "./AboutMe.styles";
+import Insta from "../insta/Insta";
 
 function AboutMe() {
   return (
@@ -21,12 +22,12 @@ function AboutMe() {
       <Section>
         <Flex>
           <ImgWithButton>
-            <img src={sisi} alt="Ups" />
-            <SLink to="kontakt">Napisz do mnie</SLink>
+            <img src={Foto2} alt="Ups" />
+            <SLink to="kontakt">Sesje rodzinne</SLink>
           </ImgWithButton>
           <ImgWithButton>
-            <img src={sisi} alt="Ups" />
-            <SLink to="kontakt">Napisz do mnie</SLink>
+            <img src={Foto1} alt="Ups" />
+            <SLink to="kontakt">Sesje niemowlęce</SLink>
           </ImgWithButton>
         </Flex>
       </Section>
@@ -82,6 +83,7 @@ function AboutMe() {
           – śluby cywilne czy chrzciny.
         </TextPart>
       </FullWidthSection>
+      <Insta/>
       <MockTemp>
   
       </MockTemp>
